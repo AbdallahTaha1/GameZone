@@ -1,3 +1,6 @@
+using GameZone.Data;
+using System.Net.WebSockets;
+
 namespace GameZone
 {
     public class Program
@@ -7,7 +10,10 @@ namespace GameZone
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+                                            ?? throw new InvalidOperationException("No connection string was found");
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
             var app = builder.Build();
 
