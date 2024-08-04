@@ -34,7 +34,7 @@ namespace GameZone
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Games}/{action=Index}/{id?}");
 
             app.Run();
         }
