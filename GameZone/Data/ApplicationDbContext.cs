@@ -30,11 +30,14 @@ namespace GameZone.Data
                 new Device { Id = 3, Name = "Nintendo Switch", Icon = "bi bi-nintendo-switch" },
                 new Device { Id = 4, Name = "PC", Icon = "bi bi-pc-display" }
                 });
+
+            modelBuilder.Entity<GameDevice>().HasKey(e => new {e.GameId, e.DeviceId});
+
             base.OnModelCreating(modelBuilder);
         }
         public DbSet<Game> Games { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Device> Devices { get; set; }
-
+        public DbSet<GameDevice> GameDevices { get; set; }
     }
 }

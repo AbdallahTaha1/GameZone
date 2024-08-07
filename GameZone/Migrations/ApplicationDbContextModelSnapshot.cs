@@ -21,21 +21,6 @@ namespace GameZone.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DeviceGame", b =>
-                {
-                    b.Property<int>("DevicesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("gamesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DevicesId", "gamesId");
-
-                    b.HasIndex("gamesId");
-
-                    b.ToTable("DeviceGame");
-                });
-
             modelBuilder.Entity("GameZone.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -168,19 +153,19 @@ namespace GameZone.Migrations
                     b.ToTable("Games");
                 });
 
-            modelBuilder.Entity("DeviceGame", b =>
+            modelBuilder.Entity("GameZone.Models.GameDevice", b =>
                 {
-                    b.HasOne("GameZone.Models.Device", null)
-                        .WithMany()
-                        .HasForeignKey("DevicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
 
-                    b.HasOne("GameZone.Models.Game", null)
-                        .WithMany()
-                        .HasForeignKey("gamesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("DeviceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GameId", "DeviceId");
+
+                    b.HasIndex("DeviceId");
+
+                    b.ToTable("GameDevices");
                 });
 
             modelBuilder.Entity("GameZone.Models.Game", b =>
@@ -194,9 +179,33 @@ namespace GameZone.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("GameZone.Models.GameDevice", b =>
+                {
+                    b.HasOne("GameZone.Models.Device", "Device")
+                        .WithMany()
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GameZone.Models.Game", "Game")
+                        .WithMany("Devices")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Device");
+
+                    b.Navigation("Game");
+                });
+
             modelBuilder.Entity("GameZone.Models.Category", b =>
                 {
                     b.Navigation("games");
+                });
+
+            modelBuilder.Entity("GameZone.Models.Game", b =>
+                {
+                    b.Navigation("Devices");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,7 +8,7 @@
         public string Cover { get; set; } = string.Empty;
         public int CategoryId { get; set; }
         public Category Category { get; set; } = default!;
-        public ICollection<Device> Devices { get; set; } = new List<Device>();
+        public ICollection<GameDevice> Devices { get; set; } = new List<GameDevice>();
 
     }
 }
