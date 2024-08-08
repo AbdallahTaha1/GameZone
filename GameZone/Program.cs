@@ -15,7 +15,7 @@ namespace GameZone
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IDevicesService, DevicesService>();
-            builder.Services.AddScoped<IGamesServices, GamesServices>();
+            builder.Services.AddScoped<IGamesServices, GamesService>();
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
             var app = builder.Build();
