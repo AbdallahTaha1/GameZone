@@ -15,6 +15,15 @@ namespace GameZone.Services
             _imagesPath = $"{_webHostEnvironment.WebRootPath}{Settings.FileSettings.ImagesPath}";
         }
 
+        public IEnumerable<Game> GetAll()
+        {
+            return _context.Games
+                .Include(g  => g.Category)
+                .Include(g => g.Devices)
+                .ThenInclude(d => d.Device)
+                .AsNoTracking()
+                .ToList();
+        }
         public async Task Create(CreateGameFormViewModel model)
         {
             var coverName = $"{Guid.NewGuid()}{Path.GetExtension(model.Cover.FileName)}";
