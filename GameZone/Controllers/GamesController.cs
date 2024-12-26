@@ -1,4 +1,5 @@
-﻿using GameZone.ViewModels;
+﻿using GameZone.Models;
+using GameZone.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Security;
 
@@ -58,6 +59,42 @@ namespace GameZone.Controllers
             }
             
             await _gamesServices.Create(model);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id) {
+
+            var game = _gamesServices.GetById(id);
+
+            if(game is null) return NotFound();
+
+            var gameViewModel = new EditGameFormViewModel()
+            {
+                Name = game.Name,
+                CategoryId = game.CategoryId,
+                Categories = _categoriesService.GetSelectList(),
+                Devices = _devicesService.GetSelctList(),
+                SelectedDevices = game.Devices.Select(d => d.DeviceId).ToList(),
+                Description = game.Description,
+                currentCover = game.Cover
+            };
+            return View(gameViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditGameFormViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Categories = _categoriesService.GetSelectList();
+                model.Devices = _devicesService.GetSelctList();
+                return View(model);
+            }
+
+            await _gamesServices.Edit(model);
 
             return RedirectToAction(nameof(Index));
         }
